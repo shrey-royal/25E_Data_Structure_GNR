@@ -88,6 +88,42 @@ void quickSort(int arr[], int lower, int upper) {
     }
 }
 
+/*
+    @brief Perform merge of segments.
+    @param a array to sort
+    @param l left index for merge
+    @param m mid index of the array
+    @param r right index for merge
+ */
+void merge(int *a, int l, int m, int r) {
+    int left_size = m - l + 1, right_size = r - m;
+    int left[left_size], right[right_size];
+
+    for (int i = 0; i < left_size; i++) left[i] = a[l+i];
+    for (int i = 0; i < right_size; i++) right[i] = a[m + 1 + i];
+
+    int i=0, j=0, k=l;
+    while(i < left_size && j < right_size) a[k++] = (left[i] <= right[j]) ? left[i++] : right[j++];
+
+    while(i < left_size) a[k++] = left[i++];
+    while(j < right_size) a[k++] = right[j++];
+}
+
+/*  
+    @brief Merge sort algorithm implementation
+    @param a array to sort
+    @param l index to sort from
+    @param r index to sort till
+*/
+void merge_sort(int *a, int l, int r) {
+    if(l < r) {
+        int m = (l + r) / 2;
+        merge_sort(a, l, m);
+        merge_sort(a, m+1, r);
+        merge(a, l, m, r);
+    }
+}
+
 void printArray(int *arr, int size) {
     printf("{ ");
     for (int i = 0; i < size; i++) {
@@ -107,7 +143,7 @@ int main() {
     int *arr = (int *)calloc(size, sizeof(int));
 
     for (int i = 0; i < size; i++) {
-        arr[i] = (rand() % 100000) - 49999;  // generating random number
+        arr[i] = (rand() % 100);  // generating random number
     }
 
     // printf("\nBefore Sorting: ");
@@ -119,7 +155,8 @@ int main() {
     // bubbleSort(arr, size);
     // selectionSort(arr, size);
     // insertionSort(arr, size);
-    quickSort(arr, 0, size-1);
+    // quickSort(arr, 0, size-1);
+    merge_sort(arr, 0, size-1);
 
     clock_t end = clock();
     double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
