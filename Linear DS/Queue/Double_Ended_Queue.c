@@ -60,6 +60,54 @@ void enqueRear(deque *dq, int value) {
     // printf("\n(%d, %d) -> %d", dq->front, dq->rear, value);
 }
 
+void dequeueFront(deque *dq) {
+    if (isEmpty(dq)) {
+        printf("\nDeque is empty!");
+    } else {
+        printf("\nDequed from front: %d", dq->items[dq->front]);
+
+        if (dq->front == dq->rear) {
+            dq->front = dq->rear = -1;
+        } else if (dq->front == SIZE - 1) {
+            dq->front = 0;
+        } else {
+            dq->front++;
+        }
+    }
+}
+
+void dequeueRear(deque *dq) {
+    if (isEmpty(dq)) {
+        printf("\nDeque is empty!");
+    } else {
+        printf("\nDequed from rear: %d", dq->items[dq->rear]);
+
+        if (dq->front == dq->rear) {
+            dq->front = dq->rear = -1;
+        } else if (dq->rear == 0) {
+            dq->rear = SIZE - 1;
+        } else {
+            dq->rear--;
+        }
+    }
+}
+
+int peekFront(deque *dq) {
+    if (isEmpty(dq)) {
+        printf("\nDeque is empty!");
+    } else {
+        printf("\nPeek Front: %d", dq->items[dq->front]);
+    }
+}
+
+int peekRear(deque *dq) {
+    if (isEmpty(dq)) {
+        printf("\nDeque is empty!");
+    } else {
+        printf("\nPeek Rear: %d", dq->items[dq->rear]);
+    }
+}
+
 void display(deque *dq) {
     if(isEmpty(dq)) {
         printf("\nDeque is Empty!");
@@ -91,6 +139,17 @@ int main() {
     enqueFront(&dq, 99);
     enqueFront(&dq, 98);
     enqueFront(&dq, 97);
+    display(&dq);
+
+    peekFront(&dq);
+    peekRear(&dq);
+
+    dequeueFront(&dq);
+    dequeueFront(&dq);
+    display(&dq);
+    
+    dequeueRear(&dq);
+    dequeueRear(&dq);
     display(&dq);
 
     return 0;
