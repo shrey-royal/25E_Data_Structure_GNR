@@ -64,6 +64,83 @@ void insertAtPosition(node** head, int data, int position) {
     temp->next = newNode;
 }
 
+void deleteFromBeginning(node** head) {
+    if (*head == NULL) {
+        printf("\nList is empty!");
+    } else {
+        node* temp = *head;
+        *head = (*head)->next;
+        free(temp);
+    }
+}
+
+void deleteFromEnd(node** head) {
+    if (*head == NULL) {
+        printf("\nList is empty!");
+    } else if((*head)->next == NULL) {
+        deleteFromBeginning(head);
+    } else {
+        node* temp = *head;
+        while(temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+}
+
+int getLength(node* head) {
+    int count = 0;
+    while(head != NULL) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+void deleteAtPosition(node** head, int position) {
+    int length = getLength(*head);
+
+    if (*head == NULL) {
+        printf("\nList is empty!");
+    } else if (position < 1 || position > length) {
+        printf("Invalid position!\n");
+    } else if (position == 1) {
+        deleteFromBeginning(head);
+    } else {
+        node* temp = *head;
+        for (int i = 1; i < position - 1; i++) {
+            temp = temp->next;
+        }
+        node* nodeToDelete = temp->next;
+        temp->next = temp->next->next;
+        free(nodeToDelete);
+    }
+}
+
+void reverseList(node** head) {
+    node* curr = *head;
+    node* prev = NULL;
+    node* following = NULL;
+    while(curr != NULL) {
+        following = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = following;
+    }
+    *head = prev;
+}
+
+int searchByValue(node* head, int key) {
+    while(head != NULL) {
+        if (head->data == key) {
+            return 1;
+        }
+        head = head->next;
+    }
+    return 0;
+}
+
 void printList(node* head) {
     printf("\nList: ==> ");
     while (head != NULL) {
@@ -77,7 +154,7 @@ void printList(node* head) {
 int main() {
     node* head = NULL;
     
-    printList(head);
+    // printList(head);
     insertAtBeginning(&head, 10);
     insertAtBeginning(&head, 20);
     insertAtBeginning(&head, 30);
@@ -89,10 +166,23 @@ int main() {
     // insertAtEnd(&head, 98);
     // insertAtEnd(&head, 97);
     // printList(head);
-    insertAtPosition(&head, 999, 1);
-    insertAtPosition(&head, 333, 2);
-    insertAtPosition(&head, 666, 3);
-    printList(head);
+    // insertAtPosition(&head, 999, 1);
+    // insertAtPosition(&head, 333, 2);
+    // insertAtPosition(&head, 666, 3);
+    // printList(head);
+
+    // deleteFromBeginning(&head);
+    // deleteFromEnd(&head);
+    // printList(head);
+    // printf("\nLength of the Linked List: %d", getLength(head));
+    // reverseList(&head);
+    // printList(head);
+
+    if(searchByValue(head, 40) == 1) {
+        printf("Key found!\n");
+    } else {
+        printf("Key not found!\n");
+    }
 
     return 0;
 }
