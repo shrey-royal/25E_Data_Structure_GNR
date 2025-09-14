@@ -129,9 +129,7 @@ void deleteAtPosition(node** head, int position) {
 }
 
 void reverseList(node** head) {
-    if (*head == NULL || (*head)->next == NULL) {
-        return;
-    } else {
+    if (*head != NULL && (*head)->next != NULL) {
         node* curr = *head;
         node* temp = NULL;
 
