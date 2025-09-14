@@ -74,6 +74,83 @@ void insertAtPosition(node** head, int value, int position) {
     }
 }
 
+void deleteFromFront(node** head) {
+    if (*head == NULL) {
+        printf("\nList is already empty. Nothing to delete.\n");
+    } else {
+        node* temp = *head;
+        *head = (*head)->next;
+        if (*head != NULL) {
+            (*head)->prev = NULL;
+        }
+        free(temp);
+    }
+}
+
+void deleteAtEnd(node** head) {
+    if (*head == NULL) {
+        printf("\nList is already empty. Nothing to delete.\n");
+    } else if ((*head)->next == NULL) {
+        deleteFromFront(head);
+    } else {
+        node* temp = *head;
+        while (temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+}
+
+void deleteAtPosition(node** head, int position) {
+    if (*head == NULL) {
+        printf("\nList is already empty. Nothing to delete.\n");
+    } else if (position == 1) {
+        deleteFromFront(head);
+    } else if (position < 1 || position > getLength(*head)) {
+        printf("\nPosition %d does not exist in the list.\n", position);
+    } else {
+        node* curr = *head;
+        int currPosition = 1;
+        while (curr != NULL && currPosition < position) {
+            curr = curr->next;
+            currPosition++;
+        }
+
+        if (curr->prev != NULL) {
+            curr->prev->next = curr->next;
+        }
+
+        if (curr->next != NULL) {
+            curr->next->prev = curr->prev;
+        }
+        free(curr);
+    }
+}
+
+void reverseList(node** head) {
+    if (*head == NULL || (*head)->next == NULL) {
+        return;
+    } else {
+        node* curr = *head;
+        node* temp = NULL;
+
+        // Swapping prev and next
+        while (curr != NULL) {
+            temp = curr->prev;
+            curr->prev = curr->next;
+            curr->next = temp;
+        
+            curr = curr->prev;
+        }
+
+        // Adjusting head
+        if (temp != NULL) {
+            *head = temp->prev;
+        }
+    }
+}
+
 void printList(node* head) {
     printf("\nList > \tNULL <-> ");
     while(head != NULL) {
@@ -104,8 +181,22 @@ int main() {
     insertAtEnd(&head, 77);
     printList(head);
     
-    insertAtPosition(&head, 999, 1);
-    insertAtPosition(&head, 999, 12);
+    // insertAtPosition(&head, 999, 1);
+    // insertAtPosition(&head, 999, 12);
+
+    // deleteFromFront(&head);
+    // deleteFromFront(&head);
+    // deleteFromFront(&head);
+    // deleteAtEnd(&head);
+    // deleteAtEnd(&head);
+    // deleteAtEnd(&head);
+    // deleteAtPosition(&head, 2);
+    // printList(head);
+    // deleteAtPosition(&head, -1);
+    // deleteAtPosition(&head, 90);
+    // deleteAtPosition(&head, 6);
+
+    reverseList(&head);
 
     printList(head);
 }
